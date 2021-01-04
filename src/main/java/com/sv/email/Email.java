@@ -32,7 +32,7 @@ public class Email {
 
     public static void main(String[] args) {
         String user = System.getenv("TEST_GMAIL_USER");
-        EmailDetails details = new EmailDetails(user, user, "subject");
+        EmailDetails details = new EmailDetails(user, "subject");
         setUserFromEnv(details);
         details.setBody("Test");
         send(details);
@@ -40,6 +40,7 @@ public class Email {
 
     private static void setUserFromEnv(EmailDetails details) {
         details.setUser(System.getenv("TEST_GMAIL_USER"));
+        details.setFrom(details.getUser());
         details.setPwd(System.getenv("TEST_GMAIL_PWD"));
     }
 

@@ -4,9 +4,8 @@ public class EmailDetails {
 
     private String to, from, subject, body, user, pwd;
 
-    public EmailDetails(String to, String from, String subject) {
+    public EmailDetails(String to, String subject) {
         this.to = to;
-        this.from = from;
         this.subject = subject;
     }
 
