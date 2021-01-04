@@ -1,6 +1,5 @@
 package com.sv.email;
 
-import com.sv.core.Utils;
 import com.sv.core.logger.MyLogger;
 
 import javax.mail.Message;
@@ -34,10 +33,14 @@ public class Email {
     public static void main(String[] args) {
         String user = System.getenv("TEST_GMAIL_USER");
         EmailDetails details = new EmailDetails(user, user, "subject");
-        details.setUser(user);
-        details.setPwd(System.getenv("TEST_GMAIL_PWD"));
+        setUserFromEnv(details);
         details.setBody("Test");
         send(details);
+    }
+
+    private static void setUserFromEnv(EmailDetails details) {
+        details.setUser(System.getenv("TEST_GMAIL_USER"));
+        details.setPwd(System.getenv("TEST_GMAIL_PWD"));
     }
 
     private static Session authenticate(String user, String pwd) {
@@ -50,8 +53,15 @@ public class Email {
     }
 
     public static void send(EmailDetails details) {
+        send(details, false);
+    }
 
+    public static void send(EmailDetails details, boolean useEnvCred) {
         try {
+            if (useEnvCred) {
+                setUserFromEnv(details);
+            }
+
             Message message = new MimeMessage(authenticate(details.getUser(), details.getPwd()));
             message.setFrom(new InternetAddress(details.getFrom()));
             message.setRecipients(
