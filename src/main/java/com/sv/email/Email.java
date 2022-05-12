@@ -1,5 +1,6 @@
 package com.sv.email;
 
+import com.sv.core.exception.AppException;
 import com.sv.core.logger.MyLogger;
 
 import javax.mail.Message;
@@ -73,8 +74,11 @@ public class Email {
             message.setText(details.getBody());
 
             Transport.send(message);
-            logger.log("Email send " + details);
+            logger.info("Email send " + details);
         } catch (MessagingException e) {
+            logger.error("Email failed!! " + details, e);
+            throw new AppException(e.getMessage(), e);
+        } catch (Exception e) {
             logger.error("Email failed!! " + details, e);
         }
     }
